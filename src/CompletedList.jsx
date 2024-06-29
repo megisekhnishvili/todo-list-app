@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CompletedList = ({ tasks, onMoveToDo, onDeleteTask }) => {
+const CompletedList = React.memo(({ tasks, onMoveToDo, onDeleteTask }) => {
   return (
     <div className="completed-list">
       <h2>Completed</h2>
@@ -15,6 +15,6 @@ const CompletedList = ({ tasks, onMoveToDo, onDeleteTask }) => {
       </ul>
     </div>
   );
-};
+});
 
 export default CompletedList;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import ToDoList from './ToDoList';
 import CompletedList from './CompletedList';
 import './App.css';
@@ -8,28 +8,32 @@ const App = () => {
   const [completedTasks, setCompletedTasks] = useState([]);
   const [newTask, setNewTask] = useState('');
 
-  const handleAddTask = () => {
+  const handleAddTask = useCallback(() => {
     if (newTask.trim() !== '') {
-      setTasks([...tasks, newTask]);
+      setTasks((prevTasks) => [...prevTasks, newTask]);
       setNewTask('');
     }
-  };
+  }, [newTask]);
 
-  const handleFinishTask = (index) => {
-    const finishedTask = tasks[index];
-    setTasks(tasks.filter((_, i) => i !== index));
-    setCompletedTasks([...completedTasks, finishedTask]);
-  };
+  const handleFinishTask = useCallback((index) => {
+    setTasks((prevTasks) => {
+      const finishedTask = prevTasks[index];
+      return prevTasks.filter((_, i) => i !== index);
+    });
+    setCompletedTasks((prevCompletedTasks) => [...prevCompletedTasks, tasks[index]]);
+  }, [tasks]);
 
-  const handleMoveToDo = (index) => {
-    const taskToMove = completedTasks[index];
-    setCompletedTasks(completedTasks.filter((_, i) => i !== index));
-    setTasks([...tasks, taskToMove]);
-  };
+  const handleMoveToDo = useCallback((index) => {
+    setCompletedTasks((prevCompletedTasks) => {
+      const taskToMove = prevCompletedTasks[index];
+      return prevCompletedTasks.filter((_, i) => i !== index);
+    });
+    setTasks((prevTasks) => [...prevTasks, completedTasks[index]]);
+  }, [completedTasks]);
 
-  const handleDeleteTask = (index) => {
-    setCompletedTasks(completedTasks.filter((_, i) => i !== index));
-  };
+  const handleDeleteTask = useCallback((index) => {
+    setCompletedTasks((prevCompletedTasks) => prevCompletedTasks.filter((_, i) => i !== index));
+  }, []);
 
   return (
     <div className="app-container">

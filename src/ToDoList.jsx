@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ToDoList = ({ tasks, onFinishTask }) => {
+const ToDoList = React.memo(({ tasks, onFinishTask }) => {
   return (
     <div className="todo-list">
       <h2>To Do</h2>
@@ -14,6 +14,6 @@ const ToDoList = ({ tasks, onFinishTask }) => {
       </ul>
     </div>
   );
-};
+});
 
 export default ToDoList;
