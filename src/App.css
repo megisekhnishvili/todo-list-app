@@ -12,9 +12,10 @@
   justify-content: space-around;
 }
 
-.todo-list,
-.completed-list {
-  width: 45%;
+.backlog-list,
+.inprogress-list,
+.done-list {
+  width: 30%;
   border: 1px solid #ccc;
   padding: 10px;
   border-radius: 5px;

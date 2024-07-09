@@ -1,43 +1,47 @@
 import React, { useState, useCallback } from 'react';
-import ToDoList from './ToDoList';
-import CompletedList from './CompletedList';
+import BacklogList from './BacklogList';
+import InProgressList from './InProgressList';
+import DoneList from './DoneList';
 import './App.css';
 
 const App = () => {
-  const [tasks, setTasks] = useState([]);
-  const [completedTasks, setCompletedTasks] = useState([]);
+  const [backlogTasks, setBacklogTasks] = useState([]);
+  const [inProgressTasks, setInProgressTasks] = useState([]);
+  const [doneTasks, setDoneTasks] = useState([]);
   const [newTask, setNewTask] = useState('');
 
   const handleAddTask = useCallback(() => {
     if (newTask.trim() !== '') {
-      setTasks((prevTasks) => [...prevTasks, newTask]);
+      setBacklogTasks((prevTasks) => [...prevTasks, newTask]);
       setNewTask('');
     }
   }, [newTask]);
 
-  const handleFinishTask = useCallback((index) => {
-    setTasks((prevTasks) => {
-      const finishedTask = prevTasks[index];
-      return prevTasks.filter((_, i) => i !== index);
-    });
-    setCompletedTasks((prevCompletedTasks) => [...prevCompletedTasks, tasks[index]]);
-  }, [tasks]);
+  const handleMoveToInProgress = useCallback((index) => {
+    const taskToMove = backlogTasks[index];
+    setBacklogTasks((prevTasks) => prevTasks.filter((_, i) => i !== index));
+    setInProgressTasks((prevTasks) => [...prevTasks, taskToMove]);
+  }, [backlogTasks]);
 
-  const handleMoveToDo = useCallback((index) => {
-    setCompletedTasks((prevCompletedTasks) => {
-      const taskToMove = prevCompletedTasks[index];
-      return prevCompletedTasks.filter((_, i) => i !== index);
-    });
-    setTasks((prevTasks) => [...prevTasks, completedTasks[index]]);
-  }, [completedTasks]);
+  const handleMoveToDone = useCallback((index) => {
+    const taskToMove = inProgressTasks[index];
+    setInProgressTasks((prevTasks) => prevTasks.filter((_, i) => i !== index));
+    setDoneTasks((prevTasks) => [...prevTasks, taskToMove]);
+  }, [inProgressTasks]);
+
+  const handleMoveBackToInProgress = useCallback((index) => {
+    const taskToMove = doneTasks[index];
+    setDoneTasks((prevTasks) => prevTasks.filter((_, i) => i !== index));
+    setInProgressTasks((prevTasks) => [...prevTasks, taskToMove]);
+  }, [doneTasks]);
 
   const handleDeleteTask = useCallback((index) => {
-    setCompletedTasks((prevCompletedTasks) => prevCompletedTasks.filter((_, i) => i !== index));
+    setDoneTasks((prevTasks) => prevTasks.filter((_, i) => i !== index));
   }, []);
 
   return (
     <div className="app-container">
-      <h1>To-Do List</h1>
+      <h1>Task Management</h1>
       <div className="task-input">
         <input
           type="text"
@@ -48,10 +52,11 @@ const App = () => {
         <button onClick={handleAddTask}>Add Task</button>
       </div>
       <div className="task-columns">
-        <ToDoList tasks={tasks} onFinishTask={handleFinishTask} />
-        <CompletedList
-          tasks={completedTasks}
-          onMoveToDo={handleMoveToDo}
+        <BacklogList tasks={backlogTasks} onMoveToInProgress={handleMoveToInProgress} />
+        <InProgressList tasks={inProgressTasks} onMoveToDone={handleMoveToDone} />
+        <DoneList
+          tasks={doneTasks}
+          onMoveBackToInProgress={handleMoveBackToInProgress}
           onDeleteTask={handleDeleteTask}
         />
       </div>

@@ -1,9 +1,9 @@
 import React from 'react';
 
-const ToDoList = React.memo(({ tasks, onMoveToInProgress }) => {
+const BacklogList = React.memo(({ tasks, onMoveToInProgress }) => {
   return (
-    <div className="todo-list">
-      <h2>To Do</h2>
+    <div className="backlog-list">
+      <h2>Backlog</h2>
       <ul>
         {tasks.map((task, index) => (
           <li key={index}>
@@ -16,4 +16,4 @@ const ToDoList = React.memo(({ tasks, onMoveToInProgress }) => {
   );
 });
 
-export default ToDoList;
+export default BacklogList;

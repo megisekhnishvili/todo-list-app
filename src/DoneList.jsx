@@ -1,9 +1,9 @@
 import React from 'react';
 
-const CompletedList = React.memo(({ tasks, onMoveBackToInProgress, onDeleteTask }) => {
+const DoneList = React.memo(({ tasks, onMoveBackToInProgress, onDeleteTask }) => {
   return (
-    <div className="completed-list">
-      <h2>Completed</h2>
+    <div className="done-list">
+      <h2>Done</h2>
       <ul>
         {tasks.map((task, index) => (
           <li key={index}>
@@ -17,6 +17,4 @@ const CompletedList = React.memo(({ tasks, onMoveBackToInProgress, onDeleteTask 
   );
 });
 
-export default CompletedList;
-
-
+export default DoneList;
